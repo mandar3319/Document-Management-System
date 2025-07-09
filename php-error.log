@@ -1,0 +1,115 @@
+[23-Jun-2025 21:09:21 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[23-Jun-2025 21:10:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[23-Jun-2025 21:13:12 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[23-Jun-2025 21:13:22 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 16:53:32 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 16:53:36 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 16:55:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 16:57:58 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:00:46 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:00:53 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:02:32 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:02:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:24 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:39 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:39 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:39 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:03:39 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'deleted_at' in 'field list' in C:\xampp\htdocs\project\pages\folders.php:33
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(33): mysqli->prepare('INSERT INTO fol...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 33
+[24-Jun-2025 17:06:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'parent_id' cannot be null in C:\xampp\htdocs\project\pages\folders.php:42
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(42): mysqli_stmt->execute()
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 42
+[24-Jun-2025 17:06:44 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'parent_id' cannot be null in C:\xampp\htdocs\project\pages\folders.php:42
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folders.php(42): mysqli_stmt->execute()
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folders.php on line 42
+[24-Jun-2025 17:28:17 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'fdms.document_versions' doesn't exist in C:\xampp\htdocs\project\pages\folderinfo.php:296
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folderinfo.php(296): mysqli->prepare('INSERT INTO doc...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folderinfo.php on line 296
+[24-Jun-2025 17:28:21 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'fdms.document_versions' doesn't exist in C:\xampp\htdocs\project\pages\folderinfo.php:296
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folderinfo.php(296): mysqli->prepare('INSERT INTO doc...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folderinfo.php on line 296
+[24-Jun-2025 17:29:19 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'fdms.document_versions' doesn't exist in C:\xampp\htdocs\project\pages\folderinfo.php:296
+Stack trace:
+#0 C:\xampp\htdocs\project\pages\folderinfo.php(296): mysqli->prepare('INSERT INTO doc...')
+#1 {main}
+  thrown in C:\xampp\htdocs\project\pages\folderinfo.php on line 296

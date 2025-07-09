@@ -1,0 +1,1501 @@
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 6
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 15
+    [name] => sarang
+    [email] => saera@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 6
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => sarang
+    [1] => saera@gmail.com
+    [2] => 1
+    [3] => 15
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 10
+    [name] => aditya
+    [email] => adi@gmail.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 6
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => aditya
+    [1] => adi@gmail.com
+    [2] => 4
+    [3] => 10
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 19
+    [name] => Master
+    [email] => master@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 6
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Master
+    [1] => master@gmail.com
+    [2] => 2
+    [3] => 19
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav 
+    [email] => vivek@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 19
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 1
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav
+    [email] => vivek@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 19
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 2
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav
+    [email] => vivek@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 19
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 1
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 19
+    [name] => master
+    [email] => master@gmail.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => master
+    [1] => master@gmail.com
+    [2] => 4
+    [3] => 19
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 4
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 23
+    [name] => Aditya Sarate
+    [email] => aditya@gmail.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Aditya Sarate
+    [1] => aditya@gmail.com
+    [2] => 4
+    [3] => 23
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav
+    [email] => vivek@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 1
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav
+    [email] => vivek@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 2
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 3
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 4
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 1
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 3
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 4
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 3
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 1
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 1
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 1
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 2
+    [name] => Vivek Jadhav
+    [email] => vivek@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek@gmail.com
+    [2] => 1
+    [3] => 2
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 3
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 3
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 3
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 4
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 4
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 1
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Shubham
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Shubham
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 3
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 1
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 1
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 24
+    [name] => Abhishek Kr
+    [email] => abhik290698@gmail.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Abhishek Kr
+    [1] => abhik290698@gmail.com
+    [2] => 2
+    [3] => 24
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 1
+    [name] => Vivek Jadhav
+    [email] => vivek.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek.jadhav@apmosys.com
+    [2] => 2
+    [3] => 1
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [user_id] => 3
+    [name] => Vivek Jadhav
+    [email] => vivek2@gmail.com
+    [role_id] => 3
+    [Password] => 
+    [ajax_edit] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+SQL: UPDATE users SET name = ?, email = ?, role_id = ? WHERE id = ? AND c_id = ?
+PARAMS: Array
+(
+    [0] => Vivek Jadhav
+    [1] => vivek2@gmail.com
+    [2] => 3
+    [3] => 3
+    [4] => 2
+)
+
+TYPES: ssiii
+----
+POST: Array
+(
+    [name] => Puja
+    [email] => pujaranikhatua413@gmail.com
+    [role_id] => 1
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+----
+POST: Array
+(
+    [name] => Vivek Jadhav
+    [email] => pujaranikhatua413@gmail.com
+    [role_id] => 2
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+Prepared values: name=Vivek Jadhav, email=pujaranikhatua413@gmail.com, role_id=2, created_at=2025-07-09 09:51:47
+----
+POST: Array
+(
+    [name] => Vivek Jadhav
+    [email] => pujaranikhatua413@gmail.com
+    [role_id] => 2
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+Prepared values: name=Vivek Jadhav, email=pujaranikhatua413@gmail.com, role_id=2, created_at=2025-07-09 09:53:52
+----
+POST: Array
+(
+    [name] => Vivek Jadhav
+    [email] => asutosh.maharana@apmosys.com
+    [role_id] => 2
+    [Password] => 123456
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+Prepared values: name=Vivek Jadhav, email=asutosh.maharana@apmosys.com, role_id=2, created_at=2025-07-09 15:39:29
+----
+POST: Array
+(
+    [name] => Vivek Jadhav
+    [email] => asutosh.maharna@apmosys.com
+    [role_id] => 1
+    [Password] => 1234
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+Prepared values: name=Vivek Jadhav, email=asutosh.maharna@apmosys.com, role_id=1, created_at=2025-07-09 15:42:23
+----
+POST: Array
+(
+    [name] => Vivek Jadhav
+    [email] => anujit.jadhav@apmosys.com
+    [role_id] => 2
+    [Password] => qwed
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+    [name] => Vivek Jadhav
+)
+
+Prepared values: name=Vivek Jadhav, email=anujit.jadhav@apmosys.com, role_id=2, created_at=2025-07-09 15:47:47
+----
+POST: Array
+(
+    [name] => Rajesh Patil
+    [email] => abcd1234@gmail.com
+    [role_id] => 1
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=Rajesh Patil, email=abcd1234@gmail.com, role_id=1, created_at=2025-07-09 19:40:43
+Insert success: user abcd1234@gmail.com
+----
+POST: Array
+(
+    [name] => tyf
+    [email] => tyf@gmail.com
+    [role_id] => 3
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=tyf, email=tyf@gmail.com, role_id=3, created_at=2025-07-09 19:43:12
+Insert success: user tyf@gmail.com
+----
+POST: Array
+(
+    [name] => efer
+    [email] => wer@gmail.com
+    [role_id] => 3
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=efer, email=wer@gmail.com, role_id=3, created_at=2025-07-09 19:44:06
+Insert success: user wer@gmail.com
+----
+POST: Array
+(
+    [name] => abhi
+    [email] => abhi@gmail.com
+    [role_id] => 1
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=abhi, email=abhi@gmail.com, role_id=1, created_at=2025-07-09 19:45:39
+Insert success: user abhi@gmail.com
+----
+POST: Array
+(
+    [name] => Rajesh
+    [email] => rajesh-f@gmail.com
+    [role_id] => 2
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=Rajesh, email=rajesh-f@gmail.com, role_id=2, created_at=2025-07-09 19:48:09
+Insert success: user rajesh-f@gmail.com
+----
+POST: Array
+(
+    [name] => rajeshadmijn
+    [email] => rajeshadmijn1234@gmail.com
+    [role_id] => 2
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=rajeshadmijn, email=rajeshadmijn1234@gmail.com, role_id=2, created_at=2025-07-09 19:50:36
+Insert success: user rajeshadmijn1234@gmail.com
+----
+POST: Array
+(
+    [name] => super-vivek
+    [email] => supervivek@gmail.com
+    [role_id] => 1
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=super-vivek, email=supervivek@gmail.com, role_id=1, created_at=2025-07-09 19:56:23
+Insert success: user supervivek@gmail.com
+----
+POST: Array
+(
+    [name] => add-vivek
+    [email] => addminvivek@gmail.com
+    [role_id] => 2
+    [Password] => 123455
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=add-vivek, email=addminvivek@gmail.com, role_id=2, created_at=2025-07-09 19:57:48
+Insert success: user addminvivek@gmail.com
+----
+POST: Array
+(
+    [name] => user-vivek
+    [email] => user-vivek@gmail.com
+    [role_id] => 3
+    [Password] => 12345
+    [ajax] => 1
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+    [c_id] => 2
+)
+
+Prepared values: name=user-vivek, email=user-vivek@gmail.com, role_id=3, created_at=2025-07-09 19:58:43
+Insert success: user user-vivek@gmail.com

@@ -1,0 +1,4 @@
+[2025-07-08 15:01:09] Settings Error: Incorrect integer value: 'smtp_host' for column `fdms`.`settings`.`setting_key` at row 1
+[2025-07-08 15:05:44] Settings Error: Incorrect integer value: 'smtp_host' for column `fdms`.`settings`.`setting_key` at row 1
+[2025-07-08 15:09:53] Settings Error: Incorrect integer value: 'smtp_host' for column `fdms`.`settings`.`setting_key` at row 1
+[2025-07-08 15:11:53] Settings Error: Incorrect integer value: 'smtp_host' for column `fdms`.`settings`.`setting_key` at row 1
