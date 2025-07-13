@@ -6,10 +6,8 @@ ini_set('log_errors', 1);
 error_reporting(E_ALL);
 ini_set('error_log', __DIR__ . '/../php-error.log');
 
-
 include '../config/conn.php';
 include_once(dirname(__DIR__) . "/classes/Utils.php");
-
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['c_id'])) {
     header("Location: domain.php");
@@ -32,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                   VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL)";
         $stmt = $conn->prepare($query);
 
-        // If $parent_id is null, bind as null
         if ($parent_id === null) {
             $stmt->bind_param("issiii", $c_id, $name, $description, $parent_id, $created_by, $is_protected);
         } else {
@@ -78,14 +75,12 @@ function getAllDescendantFolderIds($conn, $folder_id) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_folder') {
     $folder_id = intval($_POST['folder_id']);
 
-    // Get all descendant folder IDs
     $allIds = [$folder_id];
     $descendants = getAllDescendantFolderIds($conn, $folder_id);
     if (!empty($descendants)) { 
         $allIds = array_merge($allIds, $descendants);
     }
 
-    // Prepare the placeholders for the IN clause
     $placeholders = implode(',', array_fill(0, count($allIds), '?'));
     $types = str_repeat('i', count($allIds));
 
@@ -93,10 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $query = "UPDATE folders SET is_deleted = 1, deleted_at = ? WHERE id IN ($placeholders)";
     $stmt = $conn->prepare($query);
 
-    // Merge $now and all folder IDs for binding
     $params = array_merge([$now], $allIds);
-
-    // Bind parameters dynamically
     $bind_names[] = $types = 's' . $types;
     foreach ($params as $k => $param) {
         $bind_names[] = &$params[$k];
@@ -125,6 +117,123 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit();
 }
 
+// AJAX: Share folder functionality
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'share_folder') {
+    $folder_id = intval($_POST['folder_id']);
+    $user_id = intval($_POST['user_id']);
+    $can_view = isset($_POST['can_view']) ? 1 : 0;
+    $can_write = isset($_POST['can_write']) ? 1 : 0;
+    $can_edit = isset($_POST['can_edit']) ? 1 : 0;
+    $can_delete = isset($_POST['can_delete']) ? 1 : 0;
+
+    // Check if permission already exists
+    $stmt = $conn->prepare("SELECT id FROM folder_permission WHERE folder_id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $folder_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo json_encode(['success' => false, 'message' => 'Permission already exists for this user']);
+        exit();
+    }
+
+    // Get role_id and email from users table
+    $userStmt = $conn->prepare("SELECT role_id, email FROM users WHERE id = ?");
+    $userStmt->bind_param("i", $user_id);
+    $userStmt->execute();
+    $userResult = $userStmt->get_result();
+    $user = $userResult->fetch_assoc();
+
+    if (!$user) {
+        echo json_encode(['success' => false, 'message' => 'User not found']);
+        exit();
+    }
+
+    $role_id = $user['role_id'];
+    $user_email = $user['email'];
+
+    // Insert new permission with role_id
+    $stmt = $conn->prepare("
+        INSERT INTO folder_permission 
+        (folder_id, user_id, role_id, can_view, can_write, can_edit, can_delete, created_at, updated_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+    ");
+    $stmt->bind_param("iiiiiii", $folder_id, $user_id, $role_id, $can_view, $can_write, $can_edit, $can_delete);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'permission_id' => $stmt->insert_id,
+            'username' => $user_email,
+            'can_view' => $can_view,
+            'can_write' => $can_write,
+            'can_edit' => $can_edit,
+            'can_delete' => $can_delete,
+            'role_id' => $role_id
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $stmt->error]);
+    }
+
+    exit();
+}
+
+
+// AJAX: Get existing permissions for a folder
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'get_folder_permissions') {
+    $folder_id = intval($_POST['folder_id']);
+    
+    $stmt = $conn->prepare("
+        SELECT fp.id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
+        FROM folder_permission fp
+        JOIN users u ON fp.user_id = u.id
+        WHERE fp.folder_id = ?
+    ");
+    $stmt->bind_param("i", $folder_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $permissions = [];
+    while ($row = $result->fetch_assoc()) {
+        $permissions[] = $row;
+    }
+    
+    echo json_encode(['success' => true, 'permissions' => $permissions]);
+    exit();
+}
+
+
+
+// AJAX: Remove permission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove_permission') {
+    $permission_id = intval($_POST['permission_id']);
+    
+    $stmt = $conn->prepare("DELETE FROM folder_permission WHERE id = ?");
+    $stmt->bind_param("i", $permission_id);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => $stmt->affected_rows > 0]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Database error']);
+    }
+    exit();
+}
+
+// AJAX: Remove permission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove_permission') {
+    $permission_id = intval($_POST['permission_id']);
+    
+    $stmt = $conn->prepare("DELETE FROM folder_permission WHERE id = ?");
+    $stmt->bind_param("i", $permission_id);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => $stmt->affected_rows > 0]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Database error']);
+    }
+    exit();
+}
+
 // AJAX: Return folder list HTML
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'get_folder_list') {
     $folders = [];
@@ -145,9 +254,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     ob_start();
     while ($folder = $result->fetch_assoc()) {
-        // Render the card HTML (copy from below, but PHP only)
+        // Get existing permissions for this folder
+        $permStmt = $conn->prepare("
+            SELECT fp.id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
+            FROM folder_permission fp
+            JOIN users u ON fp.user_id = u.id
+            WHERE fp.folder_id = ?
+        ");
+        $permStmt->bind_param("i", $folder['id']);
+        $permStmt->execute();
+        $permResult = $permStmt->get_result();
+        $existingPermissions = [];
+        while ($perm = $permResult->fetch_assoc()) {
+            $existingPermissions[] = $perm;
+        }
         ?>
-        <div class="card" data-folder-id="<?= $folder['id'] ?>" >
+        <div class="card" data-folder-id="<?= $folder['id'] ?>">
             <div class="card-header" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z"/>
@@ -155,23 +277,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             </div>
             <div class="card-body" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
                 <div class="card-title"><?= htmlspecialchars($folder['name']) ?></div>
-                <div class="card-user" >
-                <?php
-                    $created = $folder['created_by'];
-                    $userQuery = "SELECT name, profile FROM users WHERE id = '$created'";
-                    $userResult = mysqli_query($conn, $userQuery);
-                    $userName = "Unknown";
-                    $profileImage = "https://i.pravatar.cc/40?img=" . rand(1, 70);
-                    if ($userResult && mysqli_num_rows($userResult) > 0) {
-                        $user = mysqli_fetch_assoc($userResult);
-                        if (!empty($user['name'])) $userName = $user['name'];
-                        if (!empty($user['profile'])) $profileImage = $user['profile'];
-                    }
-                    $user_id = $_SESSION['user_id'] ?? null;
-                    $displayName = ($created == $user_id) ? "You" : $userName;
-                ?>
-                <img src="<?= htmlspecialchars($profileImage) ?>" alt="User" width="40" height="40" style="border-radius:50%;">
-                <span><?= htmlspecialchars($displayName) ?></span>
+                <div class="card-user">
+                    <?php
+                        $created = $folder['created_by'];
+                        $userQuery = "SELECT name, profile FROM users WHERE id = '$created'";
+                        $userResult = mysqli_query($conn, $userQuery);
+                        $userName = "Unknown";
+                        $profileImage = "https://i.pravatar.cc/40?img=" . rand(1, 70);
+                        if ($userResult && mysqli_num_rows($userResult) > 0) {
+                            $user = mysqli_fetch_assoc($userResult);
+                            if (!empty($user['name'])) $userName = $user['name'];
+                            if (!empty($user['profile'])) $profileImage = $user['profile'];
+                        }
+                        $user_id = $_SESSION['user_id'] ?? null;
+                        $displayName = ($created == $user_id) ? "You" : $userName;
+                    ?>
+                    <img src="<?= htmlspecialchars($profileImage) ?>" alt="User" width="40" height="40" style="border-radius:50%;">
+                    <span><?= htmlspecialchars($displayName) ?></span>
                 </div>
                 <div class="tags">
                     <div class="tag">Folder</div>
@@ -181,101 +303,125 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <div class="card-footer">
                 <div><?= date("d M Y", strtotime($folder['created_at'])) ?></div>
                 <div class="actions">
-                    <!-- Share Button (only if user has can_share permission) -->
-                    <?php
-                    if (Utils::canShareDocuments($conn, $user_id)) {
-                    ?>
+                    <?php if (Utils::canShareDocuments($conn, $user_id)) { ?>
                     <i class="fas fa-share-alt" title="Share" data-bs-toggle="modal" data-bs-target="#shareFolderModal_<?= $folder['id'] ?>" style="cursor:pointer;"></i>
                     <?php } 
                     if (Utils::canDeleteDocuments($conn, user_id: $user_id)){
                     ?>
-                    <!-- <i class="fas fa-code-branch" title="Version Control"></i> -->
                     <i class="fas fa-trash-alt" title="Delete" onclick="event.stopPropagation(); deleteFolder(<?= $folder['id'] ?>, this)"></i>
                     <?php } ?>
                 </div>
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Share Folder Modal -->
         <div class="modal fade" id="shareFolderModal_<?= $folder['id'] ?>" tabindex="-1">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Share Folder: <?= htmlspecialchars($folder['name']) ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <!-- Current Permissions -->
+                        <div class="mb-4">
+                            <h6>Current Permissions</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="currentPermissions_<?= $folder['id'] ?>">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>User</th>
+                                            <th class="text-center">View</th>
+                                            <th class="text-center">Write</th>
+                                            <th class="text-center">Edit</th>
+                                            <th class="text-center">Delete</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($existingPermissions as $perm): ?>
+                                        <tr data-permission-id="<?= $perm['id'] ?>">
+                                            <td><?= htmlspecialchars($perm['email']) ?></td>
+                                            <td class="text-center"><?= $perm['can_view'] ? '✅' : '❌' ?></td>
+                                            <td class="text-center"><?= $perm['can_write'] ? '✅' : '❌' ?></td>
+                                            <td class="text-center"><?= $perm['can_edit'] ? '✅' : '❌' ?></td>
+                                            <td class="text-center"><?= $perm['can_delete'] ? '✅' : '❌' ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-outline-danger remove-permission" 
+                                                        data-permission-id="<?= $perm['id'] ?>">
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-              <div class="modal-header">
-                <h5 class="modal-title">Share Folder: <?= htmlspecialchars($folder['name']) ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
+                        <!-- Add New Permission -->
+                        <div class="border-top pt-3">
+                            <h6>Add New Permission</h6>
+                            <form id="shareForm_<?= $folder['id'] ?>">
+                                <input type="hidden" name="folder_id" value="<?= $folder['id'] ?>">
+                                <input type="hidden" name="action" value="share_folder">
+                                
+                                <div class="mb-3">
+                                    <label for="user_id_<?= $folder['id'] ?>" class="form-label">Select User</label>
+                                    <select class="form-select" id="user_id_<?= $folder['id'] ?>" name="user_id" required>
+                                        <option value="" selected disabled>Select a user...</option>
+                                        <?= $userOptions ?>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a user</div>
+                                </div>
 
-              <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Permissions</label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="custom-check d-block">
+                                                <input type="checkbox" id="can-view_<?= $folder['id'] ?>" name="can_view" class="permission-check">
+                                                <span class="icon-box"></span>
+                                                Can View <small class="text-muted">(User can view folder contents)</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="custom-check d-block">
+                                                <input type="checkbox" id="can-write_<?= $folder['id'] ?>" name="can_write" class="permission-check">
+                                                <span class="icon-box"></span>
+                                                Can Write <small class="text-muted">(User can upload documents)</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="custom-check d-block">
+                                                <input type="checkbox" id="can-edit_<?= $folder['id'] ?>" name="can_edit" class="permission-check">
+                                                <span class="icon-box"></span>
+                                                Can Edit <small class="text-muted">(User can edit folder and document details)</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="custom-check d-block">
+                                                <input type="checkbox" id="can-delete_<?= $folder['id'] ?>" name="can_delete" class="permission-check">
+                                                <span class="icon-box"></span>
+                                                Can Delete <small class="text-muted">(User can delete folder contents)</small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
-                <!-- Permissions Table -->
-                <table class="table text-center mb-4">
-                  <thead class="table-light">
-                    <tr>
-                      <th>View</th>
-                      <th>Write</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="perm-icon" id="perm-view"><span class="icon">❌</span></td>
-                      <td class="perm-icon" id="perm-write"><span class="icon">❌</span></td>
-                      <td class="perm-icon" id="perm-edit"><span class="icon">❌</span></td>
-                      <td class="perm-icon" id="perm-delete"><span class="icon">❌</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <!-- Add New Permission -->
-                <h6>Add New Permission</h6>
-
-                <div class="mb-3">
-                  <label class="form-label">Select User</label>
-                  <select class="form-select is-invalid">
-                    <option selected disabled>Select a user...</option>
-                    <?= $userOptions ?>
-                  </select>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="submitBtn_<?= $folder['id'] ?>" onclick="submitShareForm(<?= $folder['id'] ?>)">
+                            <span class="submit-text">Add Permission</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </div>
-
-                <!-- Permission Checkboxes -->
-                <div class="mb-3">
-                  <label class="form-label">Permissions</label>
-
-                  <label class="custom-check">
-                    <input type="checkbox" id="can-view">
-                    <span class="icon-box"></span>
-                    Can View <small class="text-muted">(User can view folder contents)</small>
-                  </label>
-
-                  <label class="custom-check">
-                    <input type="checkbox" id="can-write">
-                    <span class="icon-box"></span>
-                    Can Write <small class="text-muted">(User can upload documents)</small>
-                  </label>
-
-                  <label class="custom-check">
-                    <input type="checkbox" id="can-edit">
-                    <span class="icon-box"></span>
-                    Can Edit <small class="text-muted">(User can edit folder and document details)</small>
-                  </label>
-
-                  <label class="custom-check">
-                    <input type="checkbox" id="can-delete">
-                    <span class="icon-box"></span>
-                    Can Delete <small class="text-muted">(User can delete folder contents)</small>
-                  </label>
-                </div>
-
-              </div>
-
-              <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-danger">Add Permission</button>
-              </div>
             </div>
-          </div>
         </div>
         <?php
     }
@@ -286,9 +432,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Fetch folders
 $folders = [];
-
 $stmt = $conn->prepare("SELECT * FROM folders WHERE c_id = ? AND is_deleted = 0 ORDER BY created_at DESC");
-$stmt->bind_param("i", $c_id);  // Only one parameter expected here
+$stmt->bind_param("i", $c_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -307,13 +452,10 @@ while ($u = $userRes->fetch_assoc()) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <?php include "components/head.php"; ?>
-  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,500,600&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
@@ -451,130 +593,82 @@ while ($u = $userRes->fetch_assoc()) {
     }
 
     .form-control, 
-.form-select {
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    padding: 8px;
-    box-shadow: none;
-}
-
-.form-control:focus, 
- .form-select:focus {
-    border-color: #007bff; 
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
-    .form-control,
-   .form-select {
-        border: 1px solid #ddd;
-        border-radius: 4px;
+    .form-select {
+        border: 1px solid #ddd; 
+        border-radius: 4px; 
         padding: 8px;
         box-shadow: none;
     }
 
-     .form-control:focus,
-     .form-select:focus {
-        border-color: #007bff;
+    .form-control:focus, 
+    .form-select:focus {
+        border-color: #007bff; 
         outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+    }
+    
+    /* Custom Checkbox Styling */
+    .custom-check {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      user-select: none;
     }
 
+    .custom-check input {
+      display: none;
+    }
+
+    .custom-check .icon-box {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background-color: #f8d7da;
+      border: 2px solid #dc3545;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      color: #dc3545;
+    }
+
+    .custom-check input:checked + .icon-box {
+      background-color: #28a745;
+      border-color: #28a745;
+      color: white;
+    }
+
+    .custom-check input:checked + .icon-box::before {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+    }
+
+    .custom-check small {
+      font-weight: normal;
+      color: #777;
+    }
+
+    /* Animation for new permission row */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     
-/* Custom Checkbox Styling */
-.custom-check {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.custom-check input {
-  display: none;
-}
-
-.custom-check .icon-box {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background-color: #f8d7da;
-  border: 2px solid #dc3545;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  color: #dc3545;
-}
-
-.custom-check input:checked + .icon-box {
-  background-color: #dc3545;
-  color: white;
-  transform: scale(1.1);
-}
-
-.custom-check input:checked + .icon-box::before {
-  content: '\f00c'; /* FontAwesome check */
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-}
-
-.custom-check input:not(:checked) + .icon-box::before {
-  content: '\f00d'; /* FontAwesome times */
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-}
-
- .perm-icon .icon {
-    font-size: 2rem;
-    color: #e74c3c; /* red by default */
-    transition: all 0.3s ease;
-  }
-
-  .perm-icon .icon.active {
-    color: #27ae60; /* green when active */
-    transform: scale(1.2);
-  }
-
-  .custom-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-
-  .custom-check input[type="checkbox"] {
-    display: none;
-  }
-
-  .custom-check .check-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8d7da;
-    color: #e74c3c;
-    border: 1px solid #e74c3c;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .custom-check input[type="checkbox"]:checked + .check-icon {
-    background: #d4edda;
-    color: #28a745;
-    border-color: #28a745;
-    transform: scale(1.1);
-  }
-
-  .custom-check small {
-    font-weight: normal;
-    color: #777;
-  }
+    .new-permission-row {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    /* Toast notification */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1100;
+    }
   </style>
 </head>
 <body class="g-sidenav-show bg-gray-100">
@@ -586,115 +680,192 @@ while ($u = $userRes->fetch_assoc()) {
         <div class="col-md-6 d-flex flex-column justify-content-center">
           <h4>
             Folders
-            <!-- <span class="badge bg-secondary" id="folderCount"><?= count($folders) ?></span> -->
           </h4>
-          <p class="text-muted mb-0"><?php  echo $c_id; echo $user_id ?>Manage your documents in folders</p>
+          <p class="text-muted mb-0">Manage your documents in folders</p>
         </div>
-        <?php 
-                if (Utils::isSuperadmin($conn, $user_id) ) {
-
-
-?>
+        <?php if (Utils::isSuperadmin($conn, $user_id)): ?>
         <div class="col-md-6 d-flex justify-content-md-end align-items-center mt-3 mt-md-0">
           <button class="btn btn-warning fw-bold" data-bs-toggle="modal" data-bs-target="#addFolderModal">
             <i class="fas fa-plus me-2"></i> Add Folder
           </button>
         </div>
-
-        <?php } ?>
+        <?php endif; ?>
       </div>
 
       <div class="folder-grid" id="folderList">
-      <?php foreach ($folders as $folder): ?>
-    <div class="card" data-folder-id="<?= $folder['id'] ?>" >
-        <div class="card-header" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z"/>
-            </svg>
-        </div>
-        <div class="card-body" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
-    <div class="card-title"><?= htmlspecialchars($folder['name']) ?></div>
-    <div class="card-user" >
-    <?php
-        // Get created_by from the folder
-        $created = $folder['created_by'];
-
-        // Debug: Print the created user ID
-        // echo "Created by user ID: " . $created;
-
-        // Run the query
-        $userQuery = "SELECT name, profile FROM users WHERE id = '$created'";
-        $userResult = mysqli_query($conn, $userQuery);
-
-        // Check for SQL errors
-        if (!$userResult) {
-            echo "MySQL Error: " . mysqli_error($conn);
-        }
-
-        // Default fallback
-        $userName = "Unknown";
-        $profileImage = "https://i.pravatar.cc/40?img=" . rand(1, 70); // fallback avatar
-
-        // If user is found
-        if ($userResult && mysqli_num_rows($userResult) > 0) {
-            $user = mysqli_fetch_assoc($userResult);
-
-            // Now fetch from DB safely
-            if (!empty($user['name'])) {
-                $userName = $user['name'];
-            }
-
-            if (!empty($user['profile'])) {
-                $profileImage = $user['profile'];
-            }
-        } else {
-            // Debug if no user found
-            echo "<!-- No user found with ID: $created -->";
-        }
-
-        // Optional: get current session user ID
-        $user_id = $_SESSION['user_id'] ?? null;
-        $displayName = ($created == $user_id) ? "You" : $userName;
-    ?>
-
-    <img src="<?= htmlspecialchars($profileImage) ?>" alt="User" width="40" height="40" style="border-radius:50%;">
-    <span><?= htmlspecialchars($displayName) ?></span>
-</div>
-
-    <div class="tags">
-        <div class="tag">Folder</div>
-        <div class="tag">From DB</div>
-    </div>
-</div>
-
-        <div class="card-footer">
-            <div><?= date("d M Y", strtotime($folder['created_at'])) ?></div>
-            <div class="actions">
-                <!-- Share Button (only if user has can_share permission) -->
-                <?php
-                // include_once(dirname(__DIR__) . "/classes/Utils.php");
-                if (Utils::canShareDocuments($conn, $user_id)) {
-                ?>
-                <i class="fas fa-share-alt" title="Share" data-bs-toggle="modal" data-bs-target="#shareFolderModal_<?= $folder['id'] ?>" style="cursor:pointer;"></i>
-                <?php } ?>
-                <i class="fas fa-code-branch" title="Version Control"></i>
-                <i class="fas fa-trash-alt" title="Delete" onclick="event.stopPropagation(); deleteFolder(<?= $folder['id'] ?>, this)"></i>
+        <?php foreach ($folders as $folder): ?>
+          <div class="card" data-folder-id="<?= $folder['id'] ?>">
+            <div class="card-header" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M10 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V8C22 6.9 21.1 6 20 6H12L10 4Z"/>
+                </svg>
             </div>
-        </div>
-    </div>
-    <!-- ...existing code... -->
-<?php endforeach; ?>
+            <div class="card-body" onclick="window.location.href='folderinfo.php?parent_id=<?= $folder['id'] ?>'">
+                <div class="card-title"><?= htmlspecialchars($folder['name']) ?></div>
+                <div class="card-user">
+                    <?php
+                        $created = $folder['created_by'];
+                        $userQuery = "SELECT name, profile FROM users WHERE id = '$created'";
+                        $userResult = mysqli_query($conn, $userQuery);
+                        $userName = "Unknown";
+                        $profileImage = "https://i.pravatar.cc/40?img=" . rand(1, 70);
+                        if ($userResult && mysqli_num_rows($userResult) > 0) {
+                            $user = mysqli_fetch_assoc($userResult);
+                            if (!empty($user['name'])) $userName = $user['name'];
+                            if (!empty($user['profile'])) $profileImage = $user['profile'];
+                        }
+                        $user_id = $_SESSION['user_id'] ?? null;
+                        $displayName = ($created == $user_id) ? "You" : $userName;
+                    ?>
+                    <img src="<?= htmlspecialchars($profileImage) ?>" alt="User" width="40" height="40" style="border-radius:50%;">
+                    <span><?= htmlspecialchars($displayName) ?></span>
+                </div>
+                <div class="tags">
+                    <div class="tag">Folder</div>
+                    <div class="tag">From DB</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div><?= date("d M Y", strtotime($folder['created_at'])) ?></div>
+                <div class="actions">
+                    <?php if (Utils::canShareDocuments($conn, $user_id)): ?>
+                    <i class="fas fa-share-alt" title="Share" data-bs-toggle="modal" data-bs-target="#shareFolderModal_<?= $folder['id'] ?>" style="cursor:pointer;"></i>
+                    <?php endif; ?>
+                    <?php if (Utils::canDeleteDocuments($conn, user_id: $user_id)): ?>
+                    <i class="fas fa-trash-alt" title="Delete" onclick="event.stopPropagation(); deleteFolder(<?= $folder['id'] ?>, this)"></i>
+                    <?php endif; ?>
+                </div>
+            </div>
+          </div>
 
+          <!-- Share Folder Modal -->
+          <div class="modal fade" id="shareFolderModal_<?= $folder['id'] ?>" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Share Folder: <?= htmlspecialchars($folder['name']) ?></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                  <!-- Current Permissions -->
+                  <div class="mb-4">
+                    <h6>Current Permissions</h6>
+                    <div class="table-responsive">
+                      <table class="table table-hover" id="currentPermissions_<?= $folder['id'] ?>">
+                        <thead class="table-light">
+                          <tr>
+                            <th>User</th>
+                            <th class="text-center">View</th>
+                            <th class="text-center">Write</th>
+                            <th class="text-center">Edit</th>
+                            <th class="text-center">Delete</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          // Get existing permissions for this folder
+                          $permStmt = $conn->prepare("
+                              SELECT fp.id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
+                              FROM folder_permission fp
+                              JOIN users u ON fp.user_id = u.id
+                              WHERE fp.folder_id = ?
+                          ");
+                          $permStmt->bind_param("i", $folder['id']);
+                          $permStmt->execute();
+                          $permResult = $permStmt->get_result();
+                          while ($perm = $permResult->fetch_assoc()): ?>
+                          <tr data-permission-id="<?= $perm['id'] ?>">
+                            <td><?= htmlspecialchars($perm['email']) ?></td>
+                            <td class="text-center"><?= $perm['can_view'] ? '✅' : '❌' ?></td>
+                            <td class="text-center"><?= $perm['can_write'] ? '✅' : '❌' ?></td>
+                            <td class="text-center"><?= $perm['can_edit'] ? '✅' : '❌' ?></td>
+                            <td class="text-center"><?= $perm['can_delete'] ? '✅' : '❌' ?></td>
+                            <td>
+                              <button type="button" class="btn btn-sm btn-outline-danger remove-permission" 
+                                      data-permission-id="<?= $perm['id'] ?>">
+                                Remove
+                              </button>
+                            </td>
+                          </tr>
+                          <?php endwhile; ?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Add New Permission -->
+                  <div class="border-top pt-3">
+                    <h6>Add New Permission</h6>
+                    <form id="shareForm_<?= $folder['id'] ?>">
+                      <input type="hidden" name="folder_id" value="<?= $folder['id'] ?>">
+                      <input type="hidden" name="action" value="share_folder">
+                      
+                      <div class="mb-3">
+                        <label for="user_id_<?= $folder['id'] ?>" class="form-label">Select User</label>
+                        <select class="form-select" id="user_id_<?= $folder['id'] ?>" name="user_id" required>
+                          <option value="" selected disabled>Select a user...</option>
+                          <?= $userOptions ?>
+                        </select>
+                        <div class="invalid-feedback">Please select a user</div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Permissions</label>
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="custom-check d-block">
+                              <input type="checkbox" id="can-view_<?= $folder['id'] ?>" name="can_view" class="permission-check">
+                              <span class="icon-box"></span>
+                              Can View <small class="text-muted">(User can view folder contents)</small>
+                            </label>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="custom-check d-block">
+                              <input type="checkbox" id="can-write_<?= $folder['id'] ?>" name="can_write" class="permission-check">
+                              <span class="icon-box"></span>
+                              Can Write <small class="text-muted">(User can upload documents)</small>
+                            </label>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="custom-check d-block">
+                              <input type="checkbox" id="can-edit_<?= $folder['id'] ?>" name="can_edit" class="permission-check">
+                              <span class="icon-box"></span>
+                              Can Edit <small class="text-muted">(User can edit folder and document details)</small>
+                            </label>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="custom-check d-block">
+                              <input type="checkbox" id="can-delete_<?= $folder['id'] ?>" name="can_delete" class="permission-check">
+                              <span class="icon-box"></span>
+                              Can Delete <small class="text-muted">(User can delete folder contents)</small>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" id="submitBtn_<?= $folder['id'] ?>" onclick="submitShareForm(<?= $folder['id'] ?>)">
+                    <span class="submit-text">Add Permission</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
       </div>
 
-      <!-- Modal -->
+      <!-- Add Folder Modal -->
       <div class="modal fade" id="addFolderModal" tabindex="-1" aria-labelledby="addFolderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <form id="folderForm">
-              <?php
-
-              ?>
               <div class="modal-header">
                 <h5 class="modal-title" id="addFolderModalLabel">Create New Folder</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -717,6 +888,9 @@ while ($u = $userRes->fetch_assoc()) {
       </div>
       <?php include "components/footer.php"; ?>
     </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
   </main>
 
   <!-- JS -->
@@ -725,22 +899,30 @@ while ($u = $userRes->fetch_assoc()) {
   <script>
     const form = document.getElementById('folderForm');
     const folderList = document.getElementById('folderList');
-    const folderCount = document.getElementById('folderCount');
 
-    // Fetch and update folder count
-    function updateFolderCount() {
-      const formData = new FormData();
-      formData.append('action', 'get_folder_count');
-      fetch(window.location.href, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (folderCount && typeof data.count !== 'undefined') {
-          folderCount.textContent = data.count;
-        }
-      });
+    // Helper function to show toast notifications
+    function showToast(message, type = 'success') {
+      const toastContainer = document.querySelector('.toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast show align-items-center text-white bg-${type} border-0`;
+      toast.setAttribute('role', 'alert');
+      toast.setAttribute('aria-live', 'assertive');
+      toast.setAttribute('aria-atomic', 'true');
+      
+      toast.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
     }
 
     // Fetch and update folder list/grid
@@ -755,7 +937,6 @@ while ($u = $userRes->fetch_assoc()) {
       .then(data => {
         if (data.html !== undefined) {
           folderList.innerHTML = data.html;
-          // Optionally re-attach event listeners if needed
         }
       });
     }
@@ -767,6 +948,14 @@ while ($u = $userRes->fetch_assoc()) {
         const card = e.target.closest('.card');
         const folderId = card.getAttribute('data-folder-id');
         deleteFolder(folderId, card);
+      }
+      
+      // Handle remove permission button clicks
+      if (e.target.classList.contains('remove-permission') || 
+          (e.target.parentElement && e.target.parentElement.classList.contains('remove-permission'))) {
+        const button = e.target.classList.contains('remove-permission') ? e.target : e.target.parentElement;
+        const permissionId = button.getAttribute('data-permission-id');
+        removePermission(permissionId, button.closest('tr'));
       }
     });
 
@@ -804,10 +993,8 @@ while ($u = $userRes->fetch_assoc()) {
               .then(res => res.json())
               .then(data => {
                 if (data.status === 'success') {
-                  // cardElement.remove(); // Remove this line
                   Swal.fire('Deleted!', 'Folder has been deleted.', 'success');
-                  updateFolderCount();
-                  updateFolderList(); // Refresh folder grid
+                  updateFolderList();
                 } else {
                   Swal.fire('Error', data.message || 'Delete failed.', 'error');
                 }
@@ -816,6 +1003,105 @@ while ($u = $userRes->fetch_assoc()) {
             }
           });
         }
+      });
+    }
+
+    // Submit share folder form
+    function submitShareForm(folderId) {
+      const form = document.getElementById(`shareForm_${folderId}`);
+      const submitBtn = document.getElementById(`submitBtn_${folderId}`);
+      const submitText = submitBtn.querySelector('.submit-text');
+      const spinner = submitBtn.querySelector('.spinner-border');
+      
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+      
+      // Show loading state
+      submitText.textContent = 'Adding...';
+      spinner.classList.remove('d-none');
+      submitBtn.disabled = true;
+      
+      const formData = new FormData(form);
+      
+      fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          
+          const newRow = document.createElement('tr');
+          newRow.className = 'new-permission-row';
+          newRow.setAttribute('data-permission-id', data.permission_id);
+          newRow.innerHTML = `
+            <td>${data.username}</td>
+            <td class="text-center">${data.can_view ? '✅' : '❌'}</td>
+            <td class="text-center">${data.can_write ? '✅' : '❌'}</td>
+            <td class="text-center">${data.can_edit ? '✅' : '❌'}</td>
+            <td class="text-center">${data.can_delete ? '✅' : '❌'}</td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-danger remove-permission" 
+                      data-permission-id="${data.permission_id}">
+                Remove
+              </button>
+            </td>
+          `;
+          
+          document.querySelector(`#currentPermissions_${folderId} tbody`).prepend(newRow);
+          
+          // Reset form
+          form.reset();
+          form.classList.remove('was-validated');
+          document.querySelectorAll(`#shareForm_${folderId} .permission-check`).forEach(cb => cb.checked = false);
+          
+          showToast('Permission added successfully!');
+        } else {
+          showToast(data.message || 'Error adding permission', 'danger');
+        }
+      })
+      .catch(() => {
+        showToast('An error occurred. Please try again.', 'danger');
+      })
+      .finally(() => {
+        // Reset button state
+        submitText.textContent = 'Add Permission';
+        spinner.classList.add('d-none');
+        submitBtn.disabled = false;
+      });
+    }
+
+    // Remove permission
+    function removePermission(permissionId, rowElement) {
+      if (!confirm('Are you sure you want to remove this permission?')) return;
+      
+      const formData = new FormData();
+      formData.append('action', 'remove_permission');
+      formData.append('permission_id', permissionId);
+      
+      fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          rowElement.classList.add('table-danger');
+          rowElement.style.transition = 'opacity 0.3s ease';
+          rowElement.style.opacity = '0';
+          
+          setTimeout(() => {
+            rowElement.remove();
+            showToast('Permission removed successfully!');
+          }, 300);
+        } else {
+          showToast('Failed to remove permission', 'danger');
+        }
+      })
+      .catch(() => {
+        showToast('An error occurred. Please try again.', 'danger');
       });
     }
 
@@ -835,25 +1121,50 @@ while ($u = $userRes->fetch_assoc()) {
         body: formData
       })
       .then(res => res.json())
-      .then(   data => {
+      .then(data => {
         if (data.status === 'success') {
-          // Remove manual card creation, just refresh list
           form.reset();
           bootstrap.Modal.getInstance(document.getElementById('addFolderModal')).hide();
-          updateFolderCount();
           updateFolderList();
+          showToast('Folder created successfully!');
         } else {
-           alert("Error: " + data.message);
+          showToast("Error: " + data.message, 'danger');
         }
       })
-     .catch(err => alert("Error: " + err));
+      .catch(err => showToast("Error: " + err, 'danger'));
     });
 
-    
-    updateFolderCount();
-    updateFolderList();
-
-   
+        // Remove permission
+    function removePermission(permissionId, rowElement) {
+      if (!confirm('Are you sure you want to remove this permission?')) return;
+      
+      const formData = new FormData();
+      formData.append('action', 'remove_permission');
+      formData.append('permission_id', permissionId);
+      
+      fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          rowElement.classList.add('table-danger');
+          rowElement.style.transition = 'opacity 0.3s ease';
+          rowElement.style.opacity = '0';
+          
+          setTimeout(() => {
+            rowElement.remove();
+            showToast('Permission removed successfully!');
+          }, 300);
+        } else {
+          showToast('Failed to remove permission', 'danger');
+        }
+      })
+      .catch(() => {
+        showToast('An error occurred. Please try again.', 'danger');
+      });
+    }
   </script>
 </body>
 </html>
