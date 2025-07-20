@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start();
-ini_set('display_errors', 0); // Don't show errors in AJAX
+ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL);
 ini_set('error_log', __DIR__ . '/../php-error.log');
@@ -174,17 +174,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } else {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $stmt->error]);
     }
-
     exit();
 }
 
+// AJAX: Update folder permission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_permission') {
+    $permission_id = intval($_POST['permission_id']);
+    $can_view = isset($_POST['can_view']) ? 1 : 0;
+    $can_write = isset($_POST['can_write']) ? 1 : 0;
+    $can_edit = isset($_POST['can_edit']) ? 1 : 0;
+    $can_delete = isset($_POST['can_delete']) ? 1 : 0;
+
+    $stmt = $conn->prepare("
+        UPDATE folder_permission 
+        SET can_view = ?, can_write = ?, can_edit = ?, can_delete = ?, updated_at = NOW()
+        WHERE id = ?
+    ");
+    $stmt->bind_param("iiiii", $can_view, $can_write, $can_edit, $can_delete, $permission_id);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'can_view' => $can_view,
+            'can_write' => $can_write,
+            'can_edit' => $can_edit,
+            'can_delete' => $can_delete
+        ]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Update failed: ' . $stmt->error]);
+    }
+    exit();
+}
 
 // AJAX: Get existing permissions for a folder
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'get_folder_permissions') {
     $folder_id = intval($_POST['folder_id']);
     
     $stmt = $conn->prepare("
-        SELECT fp.id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
+        SELECT fp.id, u.id as user_id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
         FROM folder_permission fp
         JOIN users u ON fp.user_id = u.id
         WHERE fp.folder_id = ?
@@ -199,23 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     
     echo json_encode(['success' => true, 'permissions' => $permissions]);
-    exit();
-}
-
-
-
-// AJAX: Remove permission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'remove_permission') {
-    $permission_id = intval($_POST['permission_id']);
-    
-    $stmt = $conn->prepare("DELETE FROM folder_permission WHERE id = ?");
-    $stmt->bind_param("i", $permission_id);
-    
-    if ($stmt->execute()) {
-        echo json_encode(['success' => $stmt->affected_rows > 0]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Database error']);
-    }
     exit();
 }
 
@@ -244,8 +254,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     // Fetch users for dropdown (for all modals)
     $userOptions = '';
-    $userStmt = $conn->prepare("SELECT id, email FROM users WHERE c_id = ? AND is_active = 1");
-    $userStmt->bind_param("i", $_SESSION['c_id']);
+    $userStmt = $conn->prepare("SELECT id, email FROM users WHERE c_id = ? AND is_active = 1 AND id != ?");
+    $userStmt->bind_param("ii", $_SESSION['c_id'], $_SESSION['user_id']);
     $userStmt->execute();
     $userRes = $userStmt->get_result();
     while ($u = $userRes->fetch_assoc()) {
@@ -256,7 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     while ($folder = $result->fetch_assoc()) {
         // Get existing permissions for this folder
         $permStmt = $conn->prepare("
-            SELECT fp.id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
+            SELECT fp.id, u.id as user_id, u.email, fp.can_view, fp.can_write, fp.can_edit, fp.can_delete 
             FROM folder_permission fp
             JOIN users u ON fp.user_id = u.id
             WHERE fp.folder_id = ?
@@ -341,13 +351,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                     </thead>
                                     <tbody>
                                         <?php foreach($existingPermissions as $perm): ?>
-                                        <tr data-permission-id="<?= $perm['id'] ?>">
+                                        <tr data-permission-id="<?= $perm['id'] ?>" data-user-id="<?= $perm['user_id'] ?>">
                                             <td><?= htmlspecialchars($perm['email']) ?></td>
                                             <td class="text-center"><?= $perm['can_view'] ? '✅' : '❌' ?></td>
                                             <td class="text-center"><?= $perm['can_write'] ? '✅' : '❌' ?></td>
                                             <td class="text-center"><?= $perm['can_edit'] ? '✅' : '❌' ?></td>
                                             <td class="text-center"><?= $perm['can_delete'] ? '✅' : '❌' ?></td>
                                             <td>
+                                                <button type="button" class="btn btn-sm btn-outline-primary edit-permission" 
+                                                        data-permission-id="<?= $perm['id'] ?>"
+                                                        data-can-view="<?= $perm['can_view'] ?>"
+                                                        data-can-write="<?= $perm['can_write'] ?>"
+                                                        data-can-edit="<?= $perm['can_edit'] ?>"
+                                                        data-can-delete="<?= $perm['can_delete'] ?>">
+                                                    Edit
+                                                </button>
                                                 <button type="button" class="btn btn-sm btn-outline-danger remove-permission" 
                                                         data-permission-id="<?= $perm['id'] ?>">
                                                     Remove
@@ -423,6 +441,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </div>
             </div>
         </div>
+
+        <!-- Edit Permission Modal -->
+        <div class="modal fade" id="editPermissionModal_<?= $folder['id'] ?>" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Permission</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editPermissionForm_<?= $folder['id'] ?>">
+                            <input type="hidden" name="action" value="update_permission">
+                            <input type="hidden" id="edit_permission_id_<?= $folder['id'] ?>" name="permission_id">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Permissions</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="custom-check d-block">
+                                            <input type="checkbox" id="edit-can-view_<?= $folder['id'] ?>" name="can_view" class="permission-check">
+                                            <span class="icon-box"></span>
+                                            Can View
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="custom-check d-block">
+                                            <input type="checkbox" id="edit-can-write_<?= $folder['id'] ?>" name="can_write" class="permission-check">
+                                            <span class="icon-box"></span>
+                                            Can Write
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="custom-check d-block">
+                                            <input type="checkbox" id="edit-can-edit_<?= $folder['id'] ?>" name="can_edit" class="permission-check">
+                                            <span class="icon-box"></span>
+                                            Can Edit
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="custom-check d-block">
+                                            <input type="checkbox" id="edit-can-delete_<?= $folder['id'] ?>" name="can_delete" class="permission-check">
+                                            <span class="icon-box"></span>
+                                            Can Delete
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="updatePermission(<?= $folder['id'] ?>)">
+                            <span class="submit-text">Update Permission</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php
     }
     $html = ob_get_clean();
@@ -432,7 +509,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Fetch folders
 $folders = [];
-$stmt = $conn->prepare("SELECT * FROM folders WHERE c_id = ? AND is_deleted = 0 ORDER BY created_at DESC");
+$stmt = $conn->prepare("SELECT * FROM folders WHERE c_id = ? AND is_deleted = 0 AND parent_id IS NULL ORDER BY created_at DESC");
 $stmt->bind_param("i", $c_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -443,8 +520,8 @@ while ($row = $result->fetch_assoc()) {
 
 // Fetch users for dropdown (for all modals)
 $userOptions = '';
-$userStmt = $conn->prepare("SELECT id, email FROM users WHERE c_id = ? AND is_active = 1");
-$userStmt->bind_param("i", $c_id);
+$userStmt = $conn->prepare("SELECT id, email FROM users WHERE c_id = ? AND is_active = 1 AND id != ?");
+$userStmt->bind_param("ii", $c_id, $user_id);
 $userStmt->execute();
 $userRes = $userStmt->get_result();
 while ($u = $userRes->fetch_assoc()) {
@@ -682,14 +759,12 @@ while ($u = $userRes->fetch_assoc()) {
             Folders
           </h4>
           <p class="text-muted mb-0">Manage your documents in folders</p>
-        </div>
-        <?php if (Utils::isSuperadmin($conn, $user_id)): ?>
+        </div>  
         <div class="col-md-6 d-flex justify-content-md-end align-items-center mt-3 mt-md-0">
           <button class="btn btn-warning fw-bold" data-bs-toggle="modal" data-bs-target="#addFolderModal">
             <i class="fas fa-plus me-2"></i> Add Folder
           </button>
         </div>
-        <?php endif; ?>
       </div>
 
       <div class="folder-grid" id="folderList">
@@ -737,6 +812,7 @@ while ($u = $userRes->fetch_assoc()) {
                 </div>
             </div>
           </div>
+
 
           <!-- Share Folder Modal -->
           <div class="modal fade" id="shareFolderModal_<?= $folder['id'] ?>" tabindex="-1">
@@ -858,6 +934,66 @@ while ($u = $userRes->fetch_assoc()) {
               </div>
             </div>
           </div>
+
+          <!-- Edit Permission Modal -->
+<div class="modal fade" id="editPermissionModal_<?= $folder['id'] ?>" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Permission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPermissionForm_<?= $folder['id'] ?>">
+                    <input type="hidden" name="action" value="update_permission">
+                    <input type="hidden" id="edit_permission_id_<?= $folder['id'] ?>" name="permission_id">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Permissions</label>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="custom-check d-block">
+                                    <input type="checkbox" id="edit-can-view_<?= $folder['id'] ?>" name="can_view" class="permission-check">
+                                    <span class="icon-box"></span>
+                                    Can View
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="custom-check d-block">
+                                    <input type="checkbox" id="edit-can-write_<?= $folder['id'] ?>" name="can_write" class="permission-check">
+                                    <span class="icon-box"></span>
+                                    Can Write
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="custom-check d-block">
+                                    <input type="checkbox" id="edit-can-edit_<?= $folder['id'] ?>" name="can_edit" class="permission-check">
+                                    <span class="icon-box"></span>
+                                    Can Edit
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="custom-check d-block">
+                                    <input type="checkbox" id="edit-can-delete_<?= $folder['id'] ?>" name="can_delete" class="permission-check">
+                                    <span class="icon-box"></span>
+                                    Can Delete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="updatePermission(<?= $folder['id'] ?>)">
+                    <span class="submit-text">Update Permission</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
         <?php endforeach; ?>
       </div>
 
@@ -897,6 +1033,95 @@ while ($u = $userRes->fetch_assoc()) {
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script>
+    function handleEditPermissionClick(button) {
+    const permissionId = button.getAttribute('data-permission-id');
+    const folderId = button.closest('.modal').id.replace('shareFolderModal_', '');
+    
+    // Get current permission values
+    const canView = button.getAttribute('data-can-view') === '1';
+    const canWrite = button.getAttribute('data-can-write') === '1';
+    const canEdit = button.getAttribute('data-can-edit') === '1';
+    const canDelete = button.getAttribute('data-can-delete') === '1';
+    
+    // Set form values
+    document.getElementById(`edit_permission_id_${folderId}`).value = permissionId;
+    document.getElementById(`edit-can-view_${folderId}`).checked = canView;
+    document.getElementById(`edit-can-write_${folderId}`).checked = canWrite;
+    document.getElementById(`edit-can-edit_${folderId}`).checked = canEdit;
+    document.getElementById(`edit-can-delete_${folderId}`).checked = canDelete;
+    
+    // Show modal
+    const editModal = new bootstrap.Modal(document.getElementById(`editPermissionModal_${folderId}`));
+    editModal.show();
+}
+
+// Function to update permission
+function updatePermission(folderId) {
+    const form = document.getElementById(`editPermissionForm_${folderId}`);
+    const submitBtn = form.querySelector('button[type="button"]');
+    const submitText = submitBtn.querySelector('.submit-text');
+    const spinner = submitBtn.querySelector('.spinner-border');
+    
+    // Show loading state
+    submitText.textContent = 'Updating...';
+    spinner.classList.remove('d-none');
+    submitBtn.disabled = true;
+    
+    const formData = new FormData(form);
+    
+    fetch(window.location.href, {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // Find the row in permissions table and update it
+            const permissionId = formData.get('permission_id');
+            const row = document.querySelector(`#currentPermissions_${folderId} tr[data-permission-id="${permissionId}"]`);
+            
+            if (row) {
+                row.querySelector('td:nth-child(2)').textContent = data.can_view ? '✅' : '❌';
+                row.querySelector('td:nth-child(3)').textContent = data.can_write ? '✅' : '❌';
+                row.querySelector('td:nth-child(4)').textContent = data.can_edit ? '✅' : '❌';
+                row.querySelector('td:nth-child(5)').textContent = data.can_delete ? '✅' : '❌';
+                
+                // Update data attributes on edit button
+                const editBtn = row.querySelector('.edit-permission');
+                editBtn.setAttribute('data-can-view', data.can_view ? '1' : '0');
+                editBtn.setAttribute('data-can-write', data.can_write ? '1' : '0');
+                editBtn.setAttribute('data-can-edit', data.can_edit ? '1' : '0');
+                editBtn.setAttribute('data-can-delete', data.can_delete ? '1' : '0');
+                
+                showToast('Permission updated successfully!');
+            }
+            
+            // Hide modal
+            bootstrap.Modal.getInstance(document.getElementById(`editPermissionModal_${folderId}`)).hide();
+        } else {
+            showToast(data.message || 'Error updating permission', 'danger');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred. Please try again.', 'danger');
+    })
+    .finally(() => {
+        // Reset button state
+        submitText.textContent = 'Update Permission';
+        spinner.classList.add('d-none');
+        submitBtn.disabled = false;
+    });
+}
+
+// Delegate edit permission button clicks
+document.getElementById('folderList').addEventListener('click', function(e) {
+    if (e.target.classList.contains('edit-permission') || 
+        (e.target.parentElement && e.target.parentElement.classList.contains('edit-permission'))) {
+        const button = e.target.classList.contains('edit-permission') ? e.target : e.target.parentElement;
+        handleEditPermissionClick(button);
+    }
+});
+
     const form = document.getElementById('folderForm');
     const folderList = document.getElementById('folderList');
 

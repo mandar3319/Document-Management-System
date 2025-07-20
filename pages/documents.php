@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['c_id'])) {
     exit();
 }
 
-echo $_SESSION['user_id'] ;
+echo $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -16,72 +16,74 @@ echo $_SESSION['user_id'] ;
 <head>
     <?php
     include "components/head.php";
-  ?>
+    ?>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <style>
-      table#logTable {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #ddd; 
-}
+        table#logTable {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
 
-table#logTable th, table#logTable td {
-    border: 1px solid #ddd;
-    padding: 8px; 
-    text-align: center;
-}
+        table#logTable th,
+        table#logTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
 
-table#logTable th {
-    background-color: #f4f4f4; 
-    font-weight: bold; 
-} 
+        table#logTable th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
 
-#searchForm .form-control, 
-#searchForm .form-select {
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    padding: 8px;
-    box-shadow: none;
-}
+        #searchForm .form-control,
+        #searchForm .form-select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            box-shadow: none;
+        }
 
-#searchForm .form-control:focus, 
-#searchForm .form-select:focus {
-    border-color: #007bff; 
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
-    #addDocumentForm .form-control,
-    #addDocumentForm .form-select {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 8px;
-        box-shadow: none;
-    }
+        #searchForm .form-control:focus,
+        #searchForm .form-select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
-    #addDocumentForm .form-control:focus,
-    #addDocumentForm .form-select:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
+        #addDocumentForm .form-control,
+        #addDocumentForm .form-select {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            box-shadow: none;
+        }
+
+        #addDocumentForm .form-control:focus,
+        #addDocumentForm .form-select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
     </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
 
     <?php
-      include "components/sidebar.php";
+    include "components/sidebar.php";
     ?>
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
         <?php
         include "components/navbar.php";
-      ?>
+        ?>
         <div class="container-fluid py-2">
             <div class="row mb-4">
                 <div class="col-md-6 d-flex flex-column justify-content-center">
@@ -100,7 +102,8 @@ table#logTable th {
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">Search Documents</h5>
-                    <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#searchFormCollapse" aria-expanded="false" aria-controls="searchFormCollapse">
+                    <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#searchFormCollapse" aria-expanded="false" aria-controls="searchFormCollapse">
                         Toggle Search
                     </button>
                 </div>
@@ -145,7 +148,8 @@ table#logTable th {
                             <!-- Uploaded By -->
                             <div class="col-md-4">
                                 <label for="uploadedBy" class="form-label">Uploaded By</label>
-                                <input type="text" id="uploadedBy" class="form-control" placeholder="Enter uploader name...">
+                                <input type="text" id="uploadedBy" class="form-control"
+                                    placeholder="Enter uploader name...">
                             </div>
 
                             <!-- Tags -->
@@ -160,7 +164,8 @@ table#logTable th {
 
                             <!-- Search Button -->
                             <div class="col-12">
-                                <button type="button" class="btn btn-primary" onclick="searchDocuments()">Search</button>
+                                <button type="button" class="btn btn-primary"
+                                    onclick="searchDocuments()">Search</button>
                                 <button type="reset" class="btn btn-secondary">Reset</button>
                             </div>
                         </form>
@@ -189,7 +194,7 @@ table#logTable th {
                                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-15">
                                     Size</th>
 
-                                    <th
+                                <th
                                     class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-15">
                                     version</th>
                                 <th
@@ -237,7 +242,8 @@ table#logTable th {
             </div>
 
             <!-- Add Document Modal -->
-            <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -254,36 +260,71 @@ table#logTable th {
                                 <!-- Description -->
                                 <div class="mb-3">
                                     <label for="documentDescription" class="form-label">Description</label>
-                                    <textarea id="documentDescription" name="description" class="form-control" rows="3"></textarea>
+                                    <textarea id="documentDescription" name="description" class="form-control"
+                                        rows="3"></textarea>
                                 </div>
                                 <!-- Folder -->
                                 <div class="mb-3">
                                     <label for="documentFolder" class="form-label">Folder</label>
-                                    <select id="documentFolder" name="folder" class="form-select">
-                                        <option value="">All Folders</option>
-                                        <option value="folderA">Folder A</option>
-                                        <option value="folderB">Folder B</option>
+                                    <select id="documentFolder" name="folder_id" class="form-select" required>
+                                        <option value="">Select Folder</option>
+                                        <?php
+                                        // Fetch folders and subfolders for selection
+                                        function renderFolderOptions($conn, $c_id, $parent_id = null, $prefix = '')
+                                        {
+                                            $query = is_null($parent_id)
+                                                ? "SELECT id, name FROM folders WHERE c_id = ? AND parent_id IS NULL AND is_deleted = 0"
+                                                : "SELECT id, name FROM folders WHERE c_id = ? AND parent_id = ? AND is_deleted = 0";
+                                            $stmt = is_null($parent_id)
+                                                ? $conn->prepare($query)
+                                                : $conn->prepare($query);
+                                            if (is_null($parent_id)) {
+                                                $stmt->bind_param("i", $c_id);
+                                            } else {
+                                                $stmt->bind_param("ii", $c_id, $parent_id);
+                                            }
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . $row['id'] . '">' . $prefix . htmlspecialchars($row['name']) . '</option>';
+                                                // Recursively render subfolders
+                                                renderFolderOptions($conn, $c_id, $row['id'], $prefix . '-- ');
+                                            }
+                                        }
+                                        if (isset($_SESSION['c_id'])) {
+                                            renderFolderOptions($conn, $_SESSION['c_id']);
+                                        }
+                                        ?>
                                     </select>
                                 </div>
                                 <!-- Tags -->
                                 <div class="mb-3">
                                     <label class="form-label">Tags</label>
                                     <div id="tagCheckboxes" class="mb-2">
-                                        <label class="me-2"><input type="checkbox" value="demo" class="tag-checkbox"> demo</label>
-                                        <label class="me-2"><input type="checkbox" value="IFCI" class="tag-checkbox"> IFCI</label>
-                                        <label class="me-2"><input type="checkbox" value="iShine" class="tag-checkbox"> iShine</label>
-                                        <label class="me-2"><input type="checkbox" value="PO Portal" class="tag-checkbox"> PO Portal</label>
-                                        <label class="me-2"><input type="checkbox" value="Sahara" class="tag-checkbox"> <span style='color:#d9534f'>Sahara</span></label>
-                                        <label class="me-2"><input type="checkbox" value="VIVEK" class="tag-checkbox"> VIVEK</label>
+                                        <label class="me-2"><input type="checkbox" value="demo" class="tag-checkbox">
+                                            demo</label>
+                                        <label class="me-2"><input type="checkbox" value="IFCI" class="tag-checkbox">
+                                            IFCI</label>
+                                        <label class="me-2"><input type="checkbox" value="iShine" class="tag-checkbox">
+                                            iShine</label>
+                                        <label class="me-2"><input type="checkbox" value="PO Portal"
+                                                class="tag-checkbox"> PO Portal</label>
+                                        <label class="me-2"><input type="checkbox" value="Sahara" class="tag-checkbox">
+                                            <span style='color:#d9534f'>Sahara</span></label>
+                                        <label class="me-2"><input type="checkbox" value="VIVEK" class="tag-checkbox">
+                                            VIVEK</label>
                                     </div>
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="addNewTagBtn">+ Add New Tag</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm mb-2"
+                                        id="addNewTagBtn">+ Add New Tag</button>
                                     <div id="selectedTags" class="mb-2"></div>
                                 </div>
                                 <!-- File Upload -->
                                 <div class="mb-3">
                                     <label for="documentFile" class="form-label">Document File</label>
-                                    <input type="file" id="documentFile" name="documentFile" class="form-control" required>
-                                    <small class="form-text text-muted">Supported file types: PDF, Word, Excel, PowerPoint, Images</small>
+                                    <input type="file" id="documentFile" name="documentFile" class="form-control"
+                                        required>
+                                    <small class="form-text text-muted">Supported file types: PDF, Word, Excel,
+                                        PowerPoint, Images</small>
                                 </div>
                                 <!-- Submit Button -->
                                 <div class="d-flex justify-content-end">
@@ -298,9 +339,9 @@ table#logTable th {
 
             <script>
                 // Tag selection and badge display
-                $(document).on('change', '.tag-checkbox', function() {
+                $(document).on('change', '.tag-checkbox', function () {
                     const selected = [];
-                    $('.tag-checkbox:checked').each(function() {
+                    $('.tag-checkbox:checked').each(function () {
                         selected.push($(this).val());
                     });
                     const badgeContainer = $('#selectedTags');
@@ -313,7 +354,7 @@ table#logTable th {
                 function removeTagBadge(tag) {
                     $(`.tag-checkbox[value='${tag}']`).prop('checked', false).trigger('change');
                 }
-                $('#addNewTagBtn').on('click', function() {
+                $('#addNewTagBtn').on('click', function () {
                     const newTag = prompt('Enter new tag:');
                     if (newTag) {
                         const safeTag = newTag.replace(/'/g, "");
@@ -322,12 +363,12 @@ table#logTable th {
                 });
 
                 // AJAX form submission
-                $('#addDocumentForm').on('submit', function(e) {
+                $('#addDocumentForm').on('submit', function (e) {
                     e.preventDefault();
                     const formData = new FormData(this);
                     // Add selected tags
                     const tags = [];
-                    $('.tag-checkbox:checked').each(function() { tags.push($(this).val()); });
+                    $('.tag-checkbox:checked').each(function () { tags.push($(this).val()); });
                     formData.append('tags', JSON.stringify(tags));
                     formData.append('action', 'upload_document');
                     $.ajax({
@@ -336,13 +377,13 @@ table#logTable th {
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response) {
+                        success: function (response) {
                             $('#uploadMsg').html(`<div class='alert alert-success'>${response}</div>`);
                             $('#addDocumentForm')[0].reset();
                             $('#selectedTags').empty();
                             $('.tag-checkbox').prop('checked', false);
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             $('#uploadMsg').html(`<div class='alert alert-danger'>Upload failed: ${xhr.responseText}</div>`);
                         }
                     });
@@ -365,7 +406,7 @@ table#logTable th {
                         type: 'POST',
                         data: formData,
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             // Clear table body
                             const tbody = $('#logTable tbody');
                             tbody.empty();
@@ -373,10 +414,10 @@ table#logTable th {
                                 tbody.append('<tr><td colspan="7" class="text-center">No documents found.</td></tr>');
                                 return;
                             }
-                            response.forEach(function(doc) {
+                            response.forEach(function (doc) {
                                 let tagsHtml = '';
                                 if (doc.tags) {
-                                    doc.tags.split(',').forEach(function(tag) {
+                                    doc.tags.split(',').forEach(function (tag) {
                                         tagsHtml += `<span class='badge bg-secondary me-1'>${tag}</span>`;
                                     });
                                 }
@@ -401,7 +442,7 @@ table#logTable th {
                                 `);
                             });
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             alert('Search failed.');
                         }
                     });
@@ -409,12 +450,12 @@ table#logTable th {
             </script>
 
             <?php
-        include "components/footer.php";
-      ?>
+            include "components/footer.php";
+            ?>
         </div>
     </main>
     <?php
-?>
+    ?>
     <!--   Core JS Files   -->
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap.min.js"></script>
@@ -436,16 +477,16 @@ table#logTable th {
 
     <!-- Initialize DataTable -->
     <script>
-$(document).ready(function() {
-    $('#logTable').DataTable({
-        dom: 'Bfrtip',
-        buttons: [], 
-        responsive: true,
-        info: false, 
-        paging: false 
-    });
-});
-</script>
+        $(document).ready(function () {
+            $('#logTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [],
+                responsive: true,
+                info: false,
+                paging: false
+            });
+        });
+    </script>
 </body>
 
 </html>
@@ -455,28 +496,34 @@ $(document).ready(function() {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'upload_document') {
     $title = $_POST['title'] ?? '';
     $description = $_POST['description'] ?? '';
-    $folder = $_POST['folder'] ?? '';
+    $folder_id = intval($_POST['folder_id'] ?? 0);
     $tags = isset($_POST['tags']) ? json_decode($_POST['tags'], true) : [];
     $user_id = $_SESSION['user_id'] ?? 0;
     $c_id = $_SESSION['c_id'] ?? 0;
+    $version = 1;
+    $status = 'active';
+    $is_public = 0;
     // File upload
     if (isset($_FILES['documentFile']) && $_FILES['documentFile']['error'] === UPLOAD_ERR_OK) {
         $fileTmp = $_FILES['documentFile']['tmp_name'];
         $fileName = basename($_FILES['documentFile']['name']);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        $allowed = ['pdf','doc','docx','xls','xlsx','ppt','pptx','jpg','jpeg','png','gif'];
-        if (!in_array(strtolower($fileType), $allowed)) {
+        $fileType = $_FILES['documentFile']['type'];
+        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+        $allowed = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array(strtolower($fileExt), $allowed)) {
             echo "Invalid file type.";
             exit;
         }
         $uploadDir = '../uploads/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
-        $targetPath = $uploadDir . uniqid() . '_' . $fileName;
+        if (!is_dir($uploadDir))
+            mkdir($uploadDir, 0777, true);
+        $uniqueName = uniqid('doc_', true) . '.' . $fileExt;
+        $targetPath = $uploadDir . $uniqueName;
         if (move_uploaded_file($fileTmp, $targetPath)) {
-            // Save to DB (example, adjust table/fields as needed)
-            $stmt = $conn->prepare("INSERT INTO documents (title, description, folder, tags, file_path, file_type, uploaded_by, c_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             $tagsStr = implode(',', $tags);
-            $stmt->bind_param('ssssssii', $title, $description, $folder, $tagsStr, $targetPath, $fileType, $user_id, $c_id);
+            $fileSize = filesize($targetPath);
+            $stmt = $conn->prepare("INSERT INTO documents (title, description, file_path, file_type, file_size, folder_id, uploaded_by, version, status, is_public, c_id, created_at, updated_at, deleted_at, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL, ?)");
+            $stmt->bind_param('ssssiiisssis', $title, $description, $targetPath, $fileType, $fileSize, $folder_id, $user_id, $version, $status, $is_public, $c_id, $tagsStr);
             if ($stmt->execute()) {
                 echo "Document uploaded successfully!";
             } else {
@@ -496,55 +543,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'search_documents') {
     $searchText = $_POST['searchText'] ?? '';
     $fileType = $_POST['fileType'] ?? '';
-    $folder = $_POST['folder'] ?? '';
+    $folder_id = $_POST['folder'] ?? '';
     $startDate = $_POST['startDate'] ?? '';
     $endDate = $_POST['endDate'] ?? '';
     $uploadedBy = $_POST['uploadedBy'] ?? '';
     $tags = isset($_POST['tags']) ? $_POST['tags'] : [];
-    if (is_string($tags)) $tags = json_decode($tags, true);
+    if (is_string($tags))
+        $tags = json_decode($tags, true);
     $where = [];
     $params = [];
     $types = '';
     if ($searchText) {
-        $where[] = '(title LIKE ? OR description LIKE ?)';
+        $where[] = '(d.title LIKE ? OR d.description LIKE ?)';
         $params[] = "%$searchText%";
         $params[] = "%$searchText%";
         $types .= 'ss';
     }
     if ($fileType) {
-        $where[] = 'file_type = ?';
+        $where[] = 'd.file_type = ?';
         $params[] = $fileType;
         $types .= 's';
     }
-    if ($folder) {
-        $where[] = 'folder = ?';
-        $params[] = $folder;
-        $types .= 's';
+    if ($folder_id) {
+        $where[] = 'd.folder_id = ?';
+        $params[] = $folder_id;
+        $types .= 'i';
     }
     if ($startDate) {
-        $where[] = 'created_at >= ?';
+        $where[] = 'd.created_at >= ?';
         $params[] = $startDate . ' 00:00:00';
         $types .= 's';
     }
     if ($endDate) {
-        $where[] = 'created_at <= ?';
+        $where[] = 'd.created_at <= ?';
         $params[] = $endDate . ' 23:59:59';
         $types .= 's';
     }
     if ($uploadedBy) {
-        $where[] = 'uploaded_by IN (SELECT id FROM users WHERE name LIKE ? OR email LIKE ?)';
+        $where[] = 'd.uploaded_by IN (SELECT id FROM users WHERE name LIKE ? OR email LIKE ?)';
         $params[] = "%$uploadedBy%";
         $params[] = "%$uploadedBy%";
         $types .= 'ss';
     }
     if (!empty($tags)) {
         foreach ($tags as $tag) {
-            $where[] = 'FIND_IN_SET(?, tags)';
+            $where[] = 'FIND_IN_SET(?, d.tags)';
             $params[] = $tag;
             $types .= 's';
         }
     }
-    $sql = 'SELECT d.*, u.name as uploader_name, u.email as uploader_email FROM documents d LEFT JOIN users u ON d.uploaded_by = u.id';
+    $sql = 'SELECT d.*, u.name as uploader_name, u.email as uploader_email, f.name as folder_name FROM documents d LEFT JOIN users u ON d.uploaded_by = u.id LEFT JOIN folders f ON d.folder_id = f.id';
     if ($where) {
         $sql .= ' WHERE ' . implode(' AND ', $where);
     }
@@ -557,11 +605,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $result = $stmt->get_result();
     $docs = [];
     while ($row = $result->fetch_assoc()) {
-        $row['file_size'] = isset($row['file_path']) && file_exists($row['file_path']) ? round(filesize($row['file_path'])/1048576,2).' Mb' : '';
+        $row['file_size'] = isset($row['file_path']) && file_exists($row['file_path']) ? round(filesize($row['file_path']) / 1048576, 2) . ' Mb' : '';
         $docs[] = $row;
     }
     header('Content-Type: application/json');
     echo json_encode($docs);
     exit;
+}
+// Upload new version for a document
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'upload_version') {
+    $document_id = intval($_POST['document_id'] ?? 0);
+    $change_summary = trim($_POST['change_summary'] ?? '');
+    $uploaded_by = $_SESSION['user_id'] ?? 0;
+    if (!isset($_FILES['versionFile']) || $_FILES['versionFile']['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode(['status' => 'error', 'message' => 'No file uploaded or upload error.']);
+        exit();
+    }
+    // Get current version number
+    $ver_stmt = $conn->prepare("SELECT MAX(version) as max_ver FROM document_versions WHERE document_id = ?");
+    $ver_stmt->bind_param("i", $document_id);
+    $ver_stmt->execute();
+    $ver_res = $ver_stmt->get_result();
+    $max_ver = 1;
+    if ($row = $ver_res->fetch_assoc()) {
+        $max_ver = intval($row['max_ver']) + 1;
+    }
+    $fileName = $_FILES['versionFile']['name'];
+    $fileType = $_FILES['versionFile']['type'];
+    $fileSize = $_FILES['versionFile']['size'];
+    $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+    $uniqueName = uniqid('doc_', true) . '.' . $fileExt;
+    $uploadDir = '../uploads/';
+    if (!is_dir($uploadDir))
+        mkdir($uploadDir, 0777, true);
+    $filePath = $uploadDir . $uniqueName;
+    if (move_uploaded_file($_FILES['versionFile']['tmp_name'], $filePath)) {
+        // Insert into document_versions
+        $ver_ins = $conn->prepare("INSERT INTO document_versions (document_id, version, file_path, file_size, created_by, change_summary, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+        $ver_ins->bind_param("iisiss", $document_id, $max_ver, $filePath, $fileSize, $uploaded_by, $change_summary);
+        $ver_ins->execute();
+        // Update main document record
+        $doc_upd = $conn->prepare("UPDATE documents SET file_path=?, file_type=?, file_size=?, version=?, updated_at=NOW() WHERE id=?");
+        $doc_upd->bind_param("ssiii", $filePath, $fileType, $fileSize, $max_ver, $document_id);
+        $doc_upd->execute();
+        echo json_encode(['status' => 'success', 'message' => 'Version uploaded successfully.']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Upload failed']);
+    }
+    exit();
 }
 ?>

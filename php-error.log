@@ -113,3 +113,61 @@ Stack trace:
 #0 C:\xampp\htdocs\project\pages\folderinfo.php(296): mysqli->prepare('INSERT INTO doc...')
 #1 {main}
   thrown in C:\xampp\htdocs\project\pages\folderinfo.php on line 296
+[17-Jul-2025 19:33:01 Europe/Berlin] PHP Warning:  Undefined variable $folders in C:\xampp\htdocs\DOCM\pages\folders.php on line 685
+[17-Jul-2025 19:33:01 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\DOCM\pages\folders.php on line 685
+[20-Jul-2025 07:04:42 Europe/Berlin] PHP Warning:  mysqli::__construct(): Error while reading greeting packet. PID=18740 in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:04:42 Europe/Berlin] PHP Fatal error:  Maximum execution time of 120 seconds exceeded in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:04:55 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:00 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:09 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:16 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:32 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:05:48 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:08:40 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
+[20-Jul-2025 07:18:29 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\DOCM\config\conn.php:8
+Stack trace:
+#0 C:\xampp\htdocs\DOCM\config\conn.php(8): mysqli->__construct('localhost', 'root', Object(SensitiveParameterValue), 'fdms')
+#1 C:\xampp\htdocs\DOCM\pages\folders.php(9): include('C:\\xampp\\htdocs...')
+#2 {main}
+  thrown in C:\xampp\htdocs\DOCM\config\conn.php on line 8
